@@ -1,7 +1,8 @@
-// ignore_for_file: file_names
+// ignore_for_file: deprecated_member_use, file_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tesk_count/core/colors_manger.dart';
 import 'package:tesk_count/core/style.dart';
 import 'package:tesk_count/features/cubit/cubit.dart';
@@ -20,176 +21,166 @@ class Homescreen extends StatelessWidget {
       backgroundColor: ColorsManager.primaryColor,
       appBar: AppBar(
         backgroundColor: ColorsManager.primaryColor,
-        title: const Text("BMI Calculator", style: FontManager.primaryStyle),
+        title: Text("BMI CALCULATOR", style: FontManager.primaryStyle),
         centerTitle: true,
-        elevation: 8,
-        shadowColor: Colors.black,
+        elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Spacer(),
-            Row(
-              spacing: 12,
-              children: [
-                Expanded(
-                  child: BlocBuilder<BmiCubit, BmiState>(
-                    builder: (context, state) {
-                      return SizedBox(
-                        height: 150,
+      body: Column(
+        children: [
+          // Male / Female Section
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(15.w),
+              child: BlocBuilder<BmiCubit, BmiState>(
+                builder: (context, state) {
+                  return Row(
+                    children: [
+                      Expanded(
                         child: GenerderSelection(
                           icon: Icons.male,
-                          genderText: 'Male',
+                          genderText: 'MALE',
                           onPress: () =>
                               context.read<BmiCubit>().selectGender('Male'),
                           isSelected: state.gender == 'Male',
                         ),
-                      );
-                    },
-                  ),
-                ),
-
-                Expanded(
-                  child: BlocBuilder<BmiCubit, BmiState>(
-                    builder: (context, state) {
-                      return SizedBox(
-                        height: 150,
+                      ),
+                      SizedBox(width: 15.w),
+                      Expanded(
                         child: GenerderSelection(
                           icon: Icons.female,
-                          genderText: 'Female',
+                          genderText: 'FEMALE',
                           onPress: () =>
                               context.read<BmiCubit>().selectGender('Female'),
                           isSelected: state.gender == 'Female',
                         ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
-
-            const Spacer(),
-
-            Container(
-              height: 220,
-              padding: const EdgeInsets.symmetric(vertical: 16),
+          ),
+          // Height Slider Section
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 15.w),
               decoration: BoxDecoration(
                 color: ColorsManager.thirdColor,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10.r),
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Height", style: FontManager.secondaryStyle),
-                  const SizedBox(height: 8),
+                  Text("HEIGHT", style: FontManager.secondaryStyle),
                   BlocBuilder<BmiCubit, BmiState>(
                     builder: (context, state) {
-                      return Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: state.height.toString(),
-                              style: FontManager.primaryStyle.copyWith(
-                                fontSize: 40,
-                              ),
-                            ),
-                            TextSpan(
-                              text: ' cm',
-                              style: FontManager.secondaryStyle,
-                            ),
-                          ],
-                        ),
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.alphabetic,
+                        children: [
+                          Text(
+                            state.height.toString(),
+                            style: FontManager.numberStyle,
+                          ),
+                          Text("cm", style: FontManager.secondaryStyle),
+                        ],
                       );
                     },
                   ),
                   BlocBuilder<BmiCubit, BmiState>(
                     builder: (context, state) {
-                      return Slider(
-                        activeColor: Colors.pink,
-                        min: 0,
-                        max: 300,
-                        value: state.height.toDouble(),
-                        onChanged: (value) =>
-                            context.read<BmiCubit>().changeHeight(value),
+                      return SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          activeTrackColor: ColorsManager.selectColor,
+                          inactiveTrackColor: ColorsManager.textColor,
+                          thumbColor: ColorsManager.selectColor,
+                          overlayColor: ColorsManager.selectColor.withOpacity(
+                            0.2,
+                          ),
+                          thumbShape: RoundSliderThumbShape(
+                            enabledThumbRadius: 15.r,
+                          ),
+                        ),
+                        child: Slider(
+                          value: state.height.toDouble(),
+                          min: 100.0,
+                          max: 220.0,
+                          onChanged: (value) =>
+                              context.read<BmiCubit>().changeHeight(value),
+                        ),
                       );
                     },
                   ),
                 ],
               ),
             ),
-            const Spacer(),
-
-            Row(
-              children: [
-                Expanded(
-                  child: BlocBuilder<BmiCubit, BmiState>(
-                    builder: (context, state) {
-                      return AgeWeight(
-                        isAge: false,
-                        age: state.age,
-                        weight: state.weight,
-                        onPress1: () =>
-                            context.read<BmiCubit>().decreaseWeight(),
-                        onPress2: () =>
-                            context.read<BmiCubit>().increaseWeight(),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: BlocBuilder<BmiCubit, BmiState>(
-                    builder: (context, state) {
-                      return AgeWeight(
-                        isAge: true,
-                        age: state.age,
-                        weight: state.weight,
-                        onPress1: () => context.read<BmiCubit>().decreaseAge(),
-                        onPress2: () => context.read<BmiCubit>().increaseAge(),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-
-            const Spacer(),
-            SizedBox(
-              height: 70,
+          ),
+          // Weight & Age Section
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(15.w),
               child: BlocBuilder<BmiCubit, BmiState>(
                 builder: (context, state) {
-                  return ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.pink,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ResultsScreen(
-                            bmiResult: state.bmi,
-                            resultText: getResultText(state.bmi),
-                            interpretation: getInterpretation(state.bmi),
-                          ),
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: AgeWeight(
+                          isAge: false,
+                          age: state.age,
+                          weight: state.weight,
+                          onPress1: () =>
+                              context.read<BmiCubit>().decreaseWeight(),
+                          onPress2: () =>
+                              context.read<BmiCubit>().increaseWeight(),
                         ),
-                      );
-                    },
-                    child: Text(
-                      'Calculate',
-                      style: FontManager.secondaryStyle.copyWith(
-                        color: Colors.black,
                       ),
-                    ),
+                      SizedBox(width: 15.w),
+                      Expanded(
+                        child: AgeWeight(
+                          isAge: true,
+                          age: state.age,
+                          weight: state.weight,
+                          onPress1: () =>
+                              context.read<BmiCubit>().decreaseAge(),
+                          onPress2: () =>
+                              context.read<BmiCubit>().increaseAge(),
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),
             ),
-          ],
-        ),
+          ),
+          // Calculate Button
+          GestureDetector(
+            onTap: () {
+              final state = context.read<BmiCubit>().state;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultsScreen(
+                    bmiResult: state.bmi,
+                    resultText: getResultText(state.bmi),
+                    interpretation: getInterpretation(state.bmi),
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              color: ColorsManager.selectColor,
+              height: 70.h,
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'CALCULATE',
+                  style: FontManager.primaryStyle.copyWith(fontSize: 22.sp),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

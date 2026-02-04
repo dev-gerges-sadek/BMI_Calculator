@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tesk_count/core/colors_manger.dart';
 import 'package:tesk_count/core/style.dart';
 
@@ -22,47 +23,53 @@ class ResultsScreen extends StatelessWidget {
       backgroundColor: ColorsManager.primaryColor,
       appBar: AppBar(
         backgroundColor: ColorsManager.primaryColor,
-        title: const Text('BMI Calculator', style: FontManager.primaryStyle),
+        elevation: 0,
+        title: Text('BMI CALCULATOR', style: FontManager.primaryStyle),
         centerTitle: true,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text('Your Result', style: FontManager.primaryStyle),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+            child: Text(
+              'Your Result',
+              style: FontManager.primaryStyle.copyWith(fontSize: 35.sp),
+            ),
           ),
-
           Expanded(
             child: Container(
-              margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(24),
+              margin: EdgeInsets.all(15.w),
               decoration: BoxDecoration(
-                color: ColorsManager.primaryColor,
-                borderRadius: BorderRadius.circular(12),
+                color: ColorsManager.thirdColor,
+                borderRadius: BorderRadius.circular(10.r),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
                     resultText.toUpperCase(),
-                    style: const TextStyle(
-                      color: Color(0xFF24D876),
-                      fontSize: 22,
+                    style: TextStyle(
+                      color: const Color(0xFF24D876),
+                      fontSize: 22.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-
                   Text(
                     bmiResult.toStringAsFixed(1),
-                    style: FontManager.primaryStyle,
+                    style: FontManager.numberStyle.copyWith(fontSize: 50.sp),
                   ),
-
-                  Text(
-                    interpretation,
-                    textAlign: TextAlign.center,
-                    style: FontManager.primaryStyle,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.w),
+                    child: Text(
+                      interpretation,
+                      textAlign: TextAlign.center,
+                      style: FontManager.secondaryStyle.copyWith(
+                        fontSize: 18.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -70,14 +77,17 @@ class ResultsScreen extends StatelessWidget {
           ),
 
           GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: () => Navigator.pop(context),
             child: Container(
               color: ColorsManager.selectColor,
-              height: 70,
-              child: const Center(
-                child: Text('RE-CALCULATE', style: FontManager.primaryStyle),
+              width: double.infinity,
+              height: 70.h,
+              margin: EdgeInsets.only(top: 10.h),
+              child: Center(
+                child: Text(
+                  'RE-CALCULATE',
+                  style: FontManager.primaryStyle.copyWith(fontSize: 20.sp),
+                ),
               ),
             ),
           ),

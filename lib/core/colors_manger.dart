@@ -1,10 +1,9 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 
 class ColorsManager {
-  static const Color primaryColor = Color(0xFF24263B);
+  static const Color primaryColor = Color(0xFF0A0C21); 
   static const Color secondaryColor = Colors.white;
-  static Color thirdColor = Colors.grey.withOpacity(0.3);
-  static Color selectColor = Color(0xFFE83D67);
+  static const Color thirdColor = Color(0xFF1D1E33);   
+  static const Color selectColor = Color(0xFFEB1555);  
+  static const Color textColor = Color(0xFF8D8E98);    
 }

@@ -1,17 +1,19 @@
-// ignore_for_file: camel_case_types, must_be_immutable, file_names, annotate_overrides
+// ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tesk_count/core/colors_manger.dart';
 import 'package:tesk_count/core/style.dart';
+import 'package:tesk_count/features/home/widgets/round_icon.dart';
 
-class AgeWeight extends StatefulWidget {
+class AgeWeight extends StatelessWidget {
   final bool isAge;
-  int age = 20;
-  int weight = 50;
-  Function() onPress1;
-  Function() onPress2;
+  final int age;
+  final int weight;
+  final VoidCallback onPress1;
+  final VoidCallback onPress2;
 
-  AgeWeight({
+  const AgeWeight({
     super.key,
     required this.isAge,
     required this.age,
@@ -20,55 +22,33 @@ class AgeWeight extends StatefulWidget {
     required this.onPress2,
   });
 
-  State<AgeWeight> createState() => _value_selectionState();
-}
-
-class _value_selectionState extends State<AgeWeight> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        height: 150,
-        decoration: BoxDecoration(
-          color: ColorsManager.thirdColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              widget.isAge ? 'Age' : 'Weight',
-              style: FontManager.secondaryStyle,
-            ),
-            Text(
-              widget.isAge ? widget.age.toString() : widget.weight.toString(),
-              style: FontManager.primaryStyle,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 15,
-              children: [
-                IconButton(
-                  onPressed: widget.onPress1,
-                  icon: Icon(
-                    Icons.remove_circle,
-                    size: 30,
-                    color: ColorsManager.secondaryColor,
-                  ),
-                ),
-
-                IconButton(
-                  onPressed: widget.onPress2,
-                  icon: Icon(
-                    Icons.add_circle,
-                    size: 30,
-                    color: ColorsManager.secondaryColor,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        color: ColorsManager.thirdColor,
+        borderRadius: BorderRadius.circular(10.r),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            isAge ? 'AGE' : 'WEIGHT',
+            style: FontManager.secondaryStyle.copyWith(fontSize: 18.sp),
+          ),
+          Text(
+            isAge ? age.toString() : weight.toString(),
+            style: FontManager.numberStyle,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RoundIconButton(icon: Icons.remove, onPressed: onPress1),
+              SizedBox(width: 15.w),
+              RoundIconButton(icon: Icons.add, onPressed: onPress2),
+            ],
+          ),
+        ],
       ),
     );
   }
